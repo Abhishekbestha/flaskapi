@@ -32,6 +32,26 @@ def user():
 
 # <------------------------------------------------------------------------>
 
+def save_img(text, image):
+    # if not os.path.exists("C:/Users/21701/Downloads"+"/"+text):
+    #     os.mkdir("C:/Users/21701/Downloads"+"/"+text)
+    # img1_file= open("C:/Users/21701/Downloads"+"/"+text+"/"+text+".jpg", "wb")
+    img=image.read()
+    img1_file= open("./"+"/"+text+".jpg", "wb")
+    img1_file.write(img)
+
+    return "Succesfully saved the image"
+
+@app.route("/img", methods=["POST"])
+def img():
+    imagefile = request.files
+    textfile = request.form
+    text= textfile["text"]
+    image= imagefile["image"]
+    save_img(text, image)
+
+    return "Image saved Successfully"
+
 
 
 
