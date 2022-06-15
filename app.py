@@ -37,7 +37,7 @@ def save_img(text, image):
     #     os.mkdir("C:/Users/21701/Downloads"+"/"+text)
     # img1_file= open("C:/Users/21701/Downloads"+"/"+text+"/"+text+".jpg", "wb")
     img=image.read()
-    img1_file= open("./"+"/"+text+".jpg", "wb")
+    img1_file= open("https://github.com/Abhishekbestha/flaskapi/tree/main/data"+"/"+text+".jpg", "wb")
     img1_file.write(img)
 
     return "Succesfully saved the image"
