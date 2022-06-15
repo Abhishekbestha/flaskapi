@@ -6,7 +6,7 @@ app= Flask(__name__)
 
 @app.route("/home", methods=["POST"])
 def home():
-    content= request.json
+    content= request.form
     # print(content)
     text= content["text"]
     if text.isalpha()==True:
