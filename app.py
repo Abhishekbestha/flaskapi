@@ -58,19 +58,22 @@ def img():
 # <-------------------------------------------------------------------------->
 
 
-@app.route("/time", methods=["GET"])
+@app.route("/time", methods=["POST"])
 def time():
+    content= request.form
+
     my_date = datetime.now()
     txn = my_date.strftime('%Y%m%d%H%M%S')
     ts = my_date.isoformat().split(".")[0]
-    accesskey = "Desktop_App"
+    accesskey = content["accesskey"]
+    # accesskey = "Desktop_App"
     sha256_hash = hashlib.sha256()
     a_string = accesskey + str(ts) + str(txn)
     encoded_string = a_string.encode()
     byte_array = bytearray(encoded_string)
     sha256_hash.update(byte_array)
     hash = sha256_hash.hexdigest()
-    content= request.json
+    # content= request.json
 
 
     return {"ts":ts,"txn":txn,"hash":hash}
