@@ -2,6 +2,7 @@ from flask import Flask, request
 import os
 from datetime import datetime
 import hashlib
+import requests
 
 app= Flask(__name__)
 
@@ -66,7 +67,7 @@ def time():
     txn = my_date.strftime('%Y%m%d%H%M%S')
     ts = my_date.isoformat().split(".")[0]
     accesskey = content["accesskey"]
-#     accesskey = "${{secrets.ACCESSKEY}}"
+    # accesskey = "Desktop_App"
     sha256_hash = hashlib.sha256()
     a_string = accesskey + str(ts) + str(txn)
     encoded_string = a_string.encode()
@@ -75,8 +76,58 @@ def time():
     hash = sha256_hash.hexdigest()
     # content= request.json
 
-
     return {"ts":ts,"txn":txn,"hash":hash}
+
+# <-------------------------------------------------------------------------->
+
+@app.route("/covid", methods=["POST"])
+def covid():
+    if request.method == 'POST':
+        global country
+        new_country = request.form.get('country')
+        country = new_country
+
+    # print(country)
+    url = "https://coronavirus-19-api.herokuapp.com/countries/{}"
+
+    # print(url)
+    r = requests.get(url.format(country)).json()
+    # print(r)
+    covid = {
+                'country': country.upper(),
+                'confirmed': r['cases'],
+                'recovered': r['recovered'],
+                'critical': r['critical'],
+                'deaths': r['deaths'],
+                'todayCases': r['todayCases'],
+                'todayDeaths': r['todayDeaths'],
+                'active': r['active'],
+                'totalTests': r['totalTests'],
+            }
+
+    # print(covid)
+
+    return covid
+
+
+# <-------------------------------------------------------------------------->
+
+@app.route("/countries", methods=['POST', 'GET'])
+def countries():
+    url = "https://countriesnow.space/api/v0.1/countries/states"
+    if request.method == 'GET':
+        r = requests.get(url)
+    else:
+        content = request.json
+        countries = content["country"]
+        # print(countries)
+        data = {"country": f"{countries}"}
+        r = requests.post(url, data)
+    # print(r)
+    aresp = r.json()
+    return aresp
+
+
 
 
 if __name__== "__main__":
