@@ -66,7 +66,7 @@ def time():
     txn = my_date.strftime('%Y%m%d%H%M%S')
     ts = my_date.isoformat().split(".")[0]
     accesskey = content["accesskey"]
-    # accesskey = "Desktop_App"
+    # accesskey = "${{ACCESSKEY}}"
     sha256_hash = hashlib.sha256()
     a_string = accesskey + str(ts) + str(txn)
     encoded_string = a_string.encode()
